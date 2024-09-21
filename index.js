@@ -7,6 +7,13 @@ const path = require("path");
 const cors = require("cors");
 const port = process.env.PORT || 4000;
 
+const https = require('https');  // Import https module
+const fs = require('fs');         // Import fs module
+
+// Replace with your SSL certificate and private key paths
+const privateKey = fs.readFileSync('keyValues/private.key');
+const certificate = fs.readFileSync('keyValues/certificate.crt');
+
 app.use(express.json());
 app.use(cors());
 
@@ -253,19 +260,20 @@ app.post("/removeproduct", async (req, res) => {
   res.json({ success: true, name: req.body.name })
 });
 
-// Starting Express Server
-app.listen(port, (error) => {
+// // Starting Express Server
+// app.listen(port, (error) => {
+//   if (!error) console.log("Server Running on port " + port);
+//   else console.log("Error : ", error);
+// });
+
+// Create HTTPS server
+const httpsServer = https.createServer({
+  key: privateKey,
+  cert: certificate
+}, app);
+
+// Starting Express Server with HTTPS
+httpsServer.listen(port, (error) => {
   if (!error) console.log("Server Running on port " + port);
   else console.log("Error : ", error);
 });
-// const privateKey = fs.readFileSync('keyValues/private.key');
-// const certificate = fs.readFileSync('keyValues/certificate.crt');
-
-// const options = {
-//   key: privateKey,
-//   cert: certificate
-// };
-
-// https.createServer(options, app).listen(port, () => {
-//   console.log('HTTPS server listening on port ', port);
-// });
