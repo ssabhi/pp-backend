@@ -5,14 +5,14 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 4000;
 
-const https = require('https');  // Import https module
-const fs = require('fs');         // Import fs module
+// const https = require('https');  // Import https module
+// const fs = require('fs');         // Import fs module
 
-// Replace with your SSL certificate and private key paths
-const privateKey = fs.readFileSync('keyValues/private.key');
-const certificate = fs.readFileSync('keyValues/certificate.crt');
+// // Replace with your SSL certificate and private key paths
+// const privateKey = fs.readFileSync('keyValues/private.key');
+// const certificate = fs.readFileSync('keyValues/certificate.crt');
 
 app.use(express.json());
 app.use(cors());
@@ -261,19 +261,19 @@ app.post("/removeproduct", async (req, res) => {
 });
 
 // // Starting Express Server
-// app.listen(port, (error) => {
-//   if (!error) console.log("Server Running on port " + port);
-//   else console.log("Error : ", error);
-// });
-
-// Create HTTPS server
-const httpsServer = https.createServer({
-  key: privateKey,
-  cert: certificate
-}, app);
-
-// Starting Express Server with HTTPS
-httpsServer.listen(port, (error) => {
+app.listen(port, (error) => {
   if (!error) console.log("Server Running on port " + port);
   else console.log("Error : ", error);
 });
+
+// Create HTTPS server
+// const httpsServer = https.createServer({
+//   key: privateKey,
+//   cert: certificate
+// }, app);
+
+// // Starting Express Server with HTTPS
+// httpsServer.listen(port, (error) => {
+//   if (!error) console.log("Server Running on port " + port);
+//   else console.log("Error : ", error);
+// });
