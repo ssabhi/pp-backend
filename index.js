@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 443;
 
 const https = require('https');  // Import https module
 const fs = require('fs');         // Import fs module
