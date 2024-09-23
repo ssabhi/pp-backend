@@ -7,27 +7,13 @@ const path = require("path");
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 
-// const https = require('https');  // Import https module
-// const fs = require('fs');         // Import fs module
-
-// // Replace with your SSL certificate and private key paths
-// const privateKey = fs.readFileSync('keyValues/private.key');
-// const certificate = fs.readFileSync('keyValues/certificate.crt');
-
 app.use(express.json());
 app.use(cors());
 
-
-
-
-
-
-// Database Connection With MongoDB
+// Database Connection With MongoDB 
 mongoose.connect("mongodb+srv://ghadi:digital@clusterk.qgi9m.mongodb.net/eComMERN");
-
-// paste your mongoDB Connection string above with password
-// password should not contain '@' special character
-
+// test databse
+// mongoose.connect("mongodb+srv://test:test@cluster0.go8ob.mongodb.net/ecom-test");
 
 //Image Storage Engine 
 const storage = multer.diskStorage({
@@ -50,10 +36,8 @@ app.post("/upload", upload.array('product', 4), (req, res) => {
   })
 })
 
-
 // Route for Images folder
 app.use('/images', express.static('upload/images'));
-
 
 // MiddleWare to fetch user from token
 const fetchuser = async (req, res, next) => {
@@ -70,7 +54,6 @@ const fetchuser = async (req, res, next) => {
   }
 };
 
-
 // Schema for creating user model
 const Users = mongoose.model("Users", {
   name: { type: String },
@@ -79,7 +62,6 @@ const Users = mongoose.model("Users", {
   cartData: { type: Object },
   date: { type: Date, default: Date.now() },
 });
-
 
 // Schema for creating Product
 const Product = mongoose.model("Product", {
@@ -94,6 +76,8 @@ const Product = mongoose.model("Product", {
   avilable: { type: Boolean, default: true },
 });
 
+
+// ====================================   APIS  ========================================
 
 // ROOT API Route For Testing
 app.get("/", (req, res) => {
@@ -160,6 +144,7 @@ app.post('/signup', async (req, res) => {
 })
 
 
+
 // endpoint for getting all products data
 app.get("/allproducts", async (req, res) => {
   let products = await Product.find({});
@@ -179,10 +164,10 @@ app.get("/newcollections", async (req, res) => {
 
 // endpoint for getting womens products data
 app.get("/popularinwomen", async (req, res) => {
-  let products = await Product.find({ category: "women" });
-  let arr = products.splice(0, 4);
-  console.log("Popular In Women");
-  res.send(arr);
+  let products = await Product.find({});
+  let filteredProducts = products.filter(product => product.new_price < 4000);
+  // console.log(filteredProducts);
+  res.send(filteredProducts);
 });
 
 // endpoint for getting womens products data
@@ -260,20 +245,20 @@ app.post("/removeproduct", async (req, res) => {
   res.json({ success: true, name: req.body.name })
 });
 
-// // Starting Express Server
+
+
+
+
+
+
+
+
+
+
+
+// Starting Express Server
 app.listen(port, (error) => {
   if (!error) console.log("Server Running on port " + port);
   else console.log("Error : ", error);
 });
 
-// Create HTTPS server
-// const httpsServer = https.createServer({
-//   key: privateKey,
-//   cert: certificate
-// }, app);
-
-// // Starting Express Server with HTTPS
-// httpsServer.listen(port, (error) => {
-//   if (!error) console.log("Server Running on port " + port);
-//   else console.log("Error : ", error);
-// });
